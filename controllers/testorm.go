@@ -3,9 +3,9 @@ package controllers
 import (
 	"net/http"
 	"strconv"
-	"test/testgin/models"
 
 	"github.com/gin-gonic/gin"
+	"github.com/xujintao/testgin/models"
 )
 
 func Like(ctx *gin.Context) {

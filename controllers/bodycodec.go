@@ -4,9 +4,9 @@ import (
 	"net/http"
 	"net/url"
 	"strconv"
-	"test/testgin/models"
 
 	"github.com/gin-gonic/gin"
+	"github.com/xujintao/testgin/models"
 )
 
 /*

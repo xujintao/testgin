@@ -4,10 +4,10 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"strings"
-	"test/testgin/routers"
 	"testing"
 
 	"github.com/gin-gonic/gin"
+	"github.com/xujintao/testgin/routers"
 )
 
 var g *gin.Engine

@@ -2,9 +2,9 @@ package routers
 
 import (
 	"net/http"
-	"test/testgin/controllers"
 
 	"github.com/gin-gonic/gin"
+	"github.com/xujintao/testgin/controllers"
 )
 
 // 跨域

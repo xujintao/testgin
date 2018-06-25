@@ -4,9 +4,9 @@ import (
 	"io"
 	"log"
 	"os"
-	"test/testgin/routers"
 
 	"github.com/gin-gonic/gin"
+	"github.com/xujintao/testgin/routers"
 )
 
 func main() {
