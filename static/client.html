@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+ <html>
+ <head>
+    <meta charset="utf-8">
+    <title>test page</title>
+    <script type="text/javascript" src="static/jquery-1.10.1.min.js"></script>
+    <script type="text/javascript">
+        jQuery(document).ready(function(){
+            //测试urlencode
+            $.ajax({
+                type: "post",
+                url: "/testgin/urlencode?id=1234&page=1",
+                data: {
+                    username: "alice",
+                    password: 1234
+                },
+                success: function(data){
+                    console.log(data);
+                },
+                error: function(){
+                    alert('fail');
+                }
+            });
+
+            //测试json
+            $.ajax({
+                type: "post",
+                url: "/testgin/json",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify({
+                    id: "123",
+                    page: "1",
+                    username: "alice",
+                    password: 1234
+                }),
+                success: function(data){
+                    console.log(data);
+                },
+                error: function(){
+                    alert('fail');
+                }
+            });
+
+            //测试jsonp
+            $.ajax({
+                type: "get",
+                url: "/testgin/jsonp",
+                dataType: "jsonp",
+                // jsonp: "callback",//传递给请求处理程序或页面的，用以获得jsonp回调函数名的参数名(一般默认为:callback)
+                // jsonpCallback:"flightHandler",//自定义的jsonp回调函数名称，默认为jQuery自动生成的随机函数名，也可以写"?"，jQuery会自动为你处理数据
+                success: function(json){
+                    console.log('您查询到航班信息：票价： ' + json.price + ' 元，余票： ' + json.tickets + ' 张。');
+                },
+                error: function(){
+                    alert('fail');
+                }
+            });
+
+            //外部重定向（跨域问题没有解决）
+            // $.ajax({
+            //     type:"get",
+            //     url:"/testgin/exredirect",
+            //     success: function(data){
+            //         console.log(data);
+            //     },
+            //     error: function(){
+            //         alert('fail');
+            //     }
+            // });
+
+            //内部重定向
+            $.ajax({
+                type:"get",
+                url:"/testgin/inredirect",
+                success: function(data){
+                    console.log(data);
+                },
+                error: function(){
+                    alert('fail');
+                }
+            });
+
+            //基础授权
+            // $.ajax({
+            //     type: "get",
+            //     url: "/testgin/baseauth/secrets",
+            //     success: function(data){
+            //         console.log(data);
+            //     },
+            //     error: function(){
+            //         alert('fail');
+            //     }
+            // })
+
+        });
+    </script>
+</head>
+<body>
+</body>
+</html>
