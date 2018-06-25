@@ -1,0 +1,13 @@
+language: go
+
+go:
+- "1.9"
+- "1.10.x"
+
+# 默认install是go get -t ./...
+install:
+- go get -v -t ./...
+
+# 默认script是go test -v ./...
+script:
+- go test -v ./...
