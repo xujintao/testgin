@@ -7,7 +7,7 @@ import (
 	"github.com/xujintao/testgin/controllers"
 )
 
-// 跨域
+// 跨域中间件
 const (
 	CORSHeaders = "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With"
 	CORSMethods = "POST, GET, OPTIONS, PUT, DELETE, UPDATE"
@@ -26,8 +26,8 @@ func CORSMiddleware() gin.HandlerFunc {
 		ctx.Next()
 	}
 }
-func SetupRouter() *gin.Engine {
 
+func SetupRouter() *gin.Engine {
 	//创建gin引擎
 	router := gin.Default()
 

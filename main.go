@@ -1,26 +1,28 @@
 package main
 
 import (
-	"io"
-	"log"
-	"os"
+	"flag"
 
 	"github.com/gin-gonic/gin"
+	"github.com/xujintao/glog"
 	"github.com/xujintao/testgin/routers"
 )
 
+func init() {
+	flag.Set("log_dir", "./log")
+	flag.Set("v", "3")
+	flag.Set("alsologtostderr", "true")
+	flag.Parse()
+}
+
 func main() {
 	//创建日志文件
-	file, err := os.OpenFile("log.txt", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
-	if err != nil {
-		log.Fatal("Failed to open log file:", err)
-	}
-	mw := io.MultiWriter(file, os.Stdout)
-	gin.DefaultWriter = mw
-	gin.DefaultErrorWriter = mw
-	log.SetOutput(mw)
+	gin.DefaultWriter = glog.CopyStandardLogTo("INFO")
+
+	// gin.SetMode(gin.ReleaseMode)
 
 	r := routers.SetupRouter()
 
 	r.Run(":8080")
+	glog.Flush()
 }
