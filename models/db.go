@@ -7,6 +7,8 @@ import (
 	"strconv"
 
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/xujintao/glog"
+	"github.com/xujintao/testgin/config"
 )
 
 var db *sql.DB
@@ -14,10 +16,14 @@ var db *sql.DB
 func init() {
 	//数据库连接
 	var err error
-	db, err = sql.Open("mysql", "root:1234@tcp(192.168.6.200:3306)/test?charset=utf8&parseTime=True&loc=Local")
+	dataSourceName := fmt.Sprintf("%s:%s@tcp(%s:%d)%s?charset=utf8&parseTime=True&loc=Local",
+		config.DBName, config.DBPassword, config.DBIp, config.DBPort, config.DBTable)
+	db, err = sql.Open("mysql", dataSourceName)
 	if err != nil {
-		panic(err)
+		// panic(err)
+		glog.Fatal(err)
 	}
+	glog.Infof("connect to db(%s:%d) success", config.DBIp, config.DBPort)
 	//defer db.Close()
 	db.SetMaxIdleConns(10)
 	db.SetMaxOpenConns(100)
