@@ -4,10 +4,28 @@ go:
 - "1.9"
 - "1.10.x"
 
+services:
+- docker
+
+env:
+- TESTGIN_VER=1.0.0
+
 # 默认install是go get -t ./...
 install:
-- go get -v -t ./...
+- docker pull xujintao/docker4go:1.10.3
+- docker run -v /home/travis/build/xujintao/testgin:/project xujintao/docker4go:1.10.3
+- export TESTGIN_BUILD_VER=${TESTGIN_VER}.${TRAVIS_BUILD_NUMBER}
+- docker build -t xujintao/testgin:$TESTGIN_BUILD_VER ./
+- go get -t ./...
 
 # 默认script是go test -v ./...
 script:
+# 看看镜像有没有打成功
+- docker images
+
+# 也就地测试一下
 - go test -v ./...
+
+after_success:
+- docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+- docker push xujintao/testgin:$TESTGIN_BUILD_VER
