@@ -29,6 +29,13 @@ func init() {
 	db.SetMaxOpenConns(100)
 }
 
+func Close() {
+	if err := db.Close(); err != nil {
+		glog.Warning("close db failed:", err)
+	}
+	glog.Info("close db success")
+}
+
 type User struct {
 	Id       string `form:"id" json:"id"`
 	Page     string `form:"page" json:"page"`
