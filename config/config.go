@@ -2,6 +2,8 @@ package config
 
 import (
 	"flag"
+	"log"
+	"os"
 
 	"github.com/jinzhu/configor"
 )
@@ -29,8 +31,18 @@ type Config struct {
 }
 
 func init() {
+	//配置文件检查
+	if len(os.Args) == 1 {
+		log.Fatal("没有指定配置文件，程序退出")
+	}
+
+	filePath := os.Args[1]
+	if !fileExists(filePath) {
+		log.Fatal("指定的配置文件不存在，程序退出")
+	}
+
 	//解析配置文件
-	configor.Load(BConfig, "config/config.json")
+	configor.Load(BConfig, filePath)
 	DBName = BConfig.DB.Name
 	DBUser = BConfig.DB.User
 	DBPassword = BConfig.DB.Password
@@ -43,4 +55,13 @@ func init() {
 	flag.Set("v", "3")
 	flag.Set("alsologtostderr", "true")
 	flag.Parse()
+}
+
+func fileExists(name string) bool {
+	if _, err := os.Stat(name); err != nil {
+		if os.IsNotExist(err) {
+			return false
+		}
+	}
+	return true
 }
