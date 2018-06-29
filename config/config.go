@@ -53,7 +53,7 @@ func init() {
 
 	//日志配置
 	logPath := filepath.Join(filepath.Dir(filePath), "/log")
-	os.MkdirAll(logPath, 0666)
+	os.MkdirAll(logPath, 0777)
 	flag.Set("log_dir", logPath)
 	flag.Set("v", "3")
 	flag.Set("alsologtostderr", "true")
