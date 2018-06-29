@@ -7,7 +7,6 @@ import (
 	"strconv"
 
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/xujintao/glog"
 	"github.com/xujintao/testgin/config"
 )
 
@@ -69,7 +68,7 @@ func DBReadLikeByUid(uid uint) (titles []uint) {
 	if err := db.QueryRow("SELECT @@autocommit").Scan(&autocommit); err != nil {
 		log.Panic(err)
 	}
-	glog.Infoln(autocommit)
+	log.Print(autocommit)
 
 	rows, err := db.Query("SELECT tid FROM t_like WHERE uid = ?", uid)
 	if err != nil {
