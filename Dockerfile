@@ -5,6 +5,6 @@ MAINTAINER xujintao <xujintao@126.com>
 ADD ./testgin /go/
 
 # 打包静态文件
-ADD ./static /go/
+ADD ./static /go/static/
 
 ENTRYPOINT ["/go/testgin"]
