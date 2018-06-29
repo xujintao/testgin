@@ -9,7 +9,9 @@ import (
 
 func main() {
 	//gin日志写到glog
-	gin.DefaultWriter = glog.CopyStandardLogTo("INFO")
+	w := glog.CopyStandardLogTo("INFO")
+	gin.DefaultWriter = w
+	gin.DefaultErrorWriter = w
 
 	defer glog.Flush()
 	defer models.Close()
