@@ -16,14 +16,13 @@ var db *sql.DB
 func init() {
 	//数据库连接
 	var err error
-	dataSourceName := fmt.Sprintf("%s:%s@tcp(%s:%d)%s?charset=utf8&parseTime=True&loc=Local",
-		config.DBName, config.DBPassword, config.DBIp, config.DBPort, config.DBTable)
-	db, err = sql.Open("mysql", dataSourceName)
+	dataSourceName := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8&parseTime=True&loc=Local",
+		config.DBUser, config.DBPassword, config.DBIp, config.DBPort, config.DBTable)
+	db, err = sql.Open(config.DBName, dataSourceName)
 	if err != nil {
-		// panic(err)
-		glog.Fatal(err)
+		log.Fatal(err)
 	}
-	glog.Infof("connect to db(%s:%d) success", config.DBIp, config.DBPort)
+	log.Printf("connect to %s(%s:%d) success", config.DBName, config.DBIp, config.DBPort)
 	//defer db.Close()
 	db.SetMaxIdleConns(10)
 	db.SetMaxOpenConns(100)
@@ -31,9 +30,9 @@ func init() {
 
 func Close() {
 	if err := db.Close(); err != nil {
-		glog.Warning("close db failed:", err)
+		log.Fatal("close db failed:", err)
 	}
-	glog.Info("close db success")
+	log.Print("close db success")
 }
 
 type User struct {
@@ -55,7 +54,7 @@ func DBWriteLike(l *Like) error {
 	//写法1
 	// stmt, err := db.Prepare("INSERT INTO t_like (uid, tid, cancel) VALUES(?,?,?)")
 	// if err != nil {
-	// 	log.Fatal(err)
+	// 	log.Panicln(err)
 	// }
 	// result, err := stmt.Exec(l.Uid, l.Tid, l.Cancel)
 	_, err := db.Exec("INSERT INTO t_like (uid, tid, cancel) VALUES(?,?,?)", l.Uid, l.Tid, l.Cancel)
@@ -68,13 +67,13 @@ func DBReadLikeByUid(uid uint) (titles []uint) {
 	//select tid from t_like where uid = 123;
 	var autocommit string
 	if err := db.QueryRow("SELECT @@autocommit").Scan(&autocommit); err != nil {
-		log.Fatal(err)
+		log.Panic(err)
 	}
-	fmt.Println(autocommit)
+	glog.Infoln(autocommit)
 
 	rows, err := db.Query("SELECT tid FROM t_like WHERE uid = ?", uid)
 	if err != nil {
-		log.Fatal(err)
+		log.Panic(err)
 	}
 	defer rows.Close()
 
@@ -82,13 +81,13 @@ func DBReadLikeByUid(uid uint) (titles []uint) {
 	for rows.Next() {
 		var strTid string
 		if err := rows.Scan(&strTid); err != nil {
-			log.Fatal(err)
+			log.Panic(err)
 		}
 		tid, _ := strconv.ParseUint(strTid, 10, 64)
 		titles = append(titles, uint(tid))
 	}
 	if err := rows.Err(); err != nil {
-		log.Fatal(err)
+		log.Panic(err)
 	}
 	return
 }
