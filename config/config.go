@@ -4,6 +4,7 @@ import (
 	"flag"
 	"log"
 	"os"
+	"path/filepath"
 
 	"github.com/jinzhu/configor"
 )
@@ -38,7 +39,7 @@ func init() {
 
 	filePath := os.Args[1]
 	if !fileExists(filePath) {
-		log.Fatal("指定的配置文件不存在，程序退出")
+		log.Fatalf("指定的配置文件[%s]不存在，程序退出", filePath)
 	}
 
 	//解析配置文件
@@ -51,7 +52,9 @@ func init() {
 	DBTable = BConfig.DB.Table
 
 	//日志配置
-	flag.Set("log_dir", "./log")
+	logPath := filepath.Join(filepath.Dir(filePath), "/log")
+	os.MkdirAll(logPath, 0666)
+	flag.Set("log_dir", logPath)
 	flag.Set("v", "3")
 	flag.Set("alsologtostderr", "true")
 	flag.Parse()

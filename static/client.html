@@ -92,6 +92,17 @@
             //     }
             // })
 
+            //
+            $.ajax({
+                type: "get",
+                url: "/testorm/likeinfo?uid=5",
+                success: function(data){
+                    console.log(data);
+                },
+                error: function(){
+                    alert('fail');
+                }
+            })
         });
     </script>
 </head>
