@@ -31,7 +31,7 @@ func SetupRouter() *gin.Engine {
 	//创建gin引擎
 	router := gin.Default()
 
-	//静态
+	//静态（使用相对路径）
 	router.StaticFS("/static", http.Dir("static"))
 	router.StaticFile("/", "static/client.html")
 
