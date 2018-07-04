@@ -1,12 +1,12 @@
 package controllers
 
 import (
+	"log"
 	"net/http"
 	"net/url"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/xujintao/glog"
 	"github.com/xujintao/testgin/models"
 )
 
@@ -62,7 +62,7 @@ func Json(ctx *gin.Context) {
 	//gin方式
 	var u models.User
 	ctx.BindJSON(&u)
-	glog.Info(&u)
+	log.Print(u)
 	// ctx.JSON(http.StatusOK, gin.H{
 	// 	"uid":    "1001",
 	// 	"result": "success",
