@@ -92,7 +92,7 @@
             //     }
             // })
 
-            //
+            //读库
             $.ajax({
                 type: "get",
                 url: "/testorm/likeinfo?uid=5",
@@ -101,6 +101,18 @@
                 },
                 error: function(){
                     alert('查库失败');
+                }
+            })
+
+            //第三方API
+            $.ajax({
+                type: "get",
+                url: "/thirdapi/r1",
+                success: function(data){
+                    console.log(data);
+                },
+                error: function(){
+                    alert('第三方api调用失败');
                 }
             })
         });

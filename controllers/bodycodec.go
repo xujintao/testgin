@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"io/ioutil"
 	"log"
 	"net/http"
 	"net/url"
@@ -63,6 +64,7 @@ func Json(ctx *gin.Context) {
 	var u models.User
 	ctx.BindJSON(&u)
 	log.Print(u)
+	log.Print(ctx.ClientIP())
 	// ctx.JSON(http.StatusOK, gin.H{
 	// 	"uid":    "1001",
 	// 	"result": "success",
@@ -72,10 +74,35 @@ func Json(ctx *gin.Context) {
 	// ctx.SecureJSON(http.StatusOK, names) //是什么？
 }
 
-//可以理解为返回一个js文件
+// 可以理解为返回一个js文件
 func Jsonp(ctx *gin.Context) {
 	ctx.JSONP(http.StatusOK, gin.H{
 		"price":   "200",
 		"tickets": 9,
 	})
+}
+
+// 用http协议调用第三方服务
+func R1(ctx *gin.Context) {
+	req, err := http.NewRequest("GET", "http://127.0.0.1:8080/thirdapi/r2", nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	r, err := httpClient.Do(req)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer r.Body.Close()
+
+	data, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Print(string(data))
+	ctx.String(http.StatusOK, string(data))
+}
+
+// 模拟第三方服务
+func R2(ctx *gin.Context) {
+	ctx.JSON(http.StatusOK, "hello, service")
 }

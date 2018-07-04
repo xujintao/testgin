@@ -91,5 +91,12 @@ func SetupRouter() *gin.Engine {
 		testorm.POST("/like", controllers.Like)
 	}
 
+	//第三方API
+	thirdAPI := router.Group("/thirdapi")
+	{
+		thirdAPI.GET("/r1", controllers.R1)
+		thirdAPI.GET("/r2", controllers.R2)
+	}
+
 	return router
 }
