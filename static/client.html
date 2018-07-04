@@ -18,7 +18,7 @@
                     console.log(data);
                 },
                 error: function(){
-                    alert('fail');
+                    alert('urlencode失败');
                 }
             });
 
@@ -37,7 +37,7 @@
                     console.log(data);
                 },
                 error: function(){
-                    alert('fail');
+                    alert('json失败');
                 }
             });
 
@@ -52,21 +52,21 @@
                     console.log('您查询到航班信息：票价： ' + json.price + ' 元，余票： ' + json.tickets + ' 张。');
                 },
                 error: function(){
-                    alert('fail');
+                    alert('jsonp失败');
                 }
             });
 
-            //外部重定向（跨域问题没有解决）
-            // $.ajax({
-            //     type:"get",
-            //     url:"/testgin/exredirect",
-            //     success: function(data){
-            //         console.log(data);
-            //     },
-            //     error: function(){
-            //         alert('fail');
-            //     }
-            // });
+            // 外部重定向（跨域问题没有解决）
+            $.ajax({
+                type: "get",
+                url: "http://106.14.208.170:8080/testgin/exredirect",
+                success: function(data){
+                    console.log(data);
+                },
+                error: function(){
+                    alert('外部重定向失败');
+                }
+            });
 
             //内部重定向
             $.ajax({
@@ -76,7 +76,7 @@
                     console.log(data);
                 },
                 error: function(){
-                    alert('fail');
+                    alert('内部重定向失败');
                 }
             });
 
@@ -88,7 +88,7 @@
             //         console.log(data);
             //     },
             //     error: function(){
-            //         alert('fail');
+            //         alert('基础授权失败');
             //     }
             // })
 
@@ -100,7 +100,7 @@
                     console.log(data);
                 },
                 error: function(){
-                    alert('fail');
+                    alert('查库失败');
                 }
             })
         });

@@ -30,6 +30,8 @@ func CORSMiddleware() gin.HandlerFunc {
 func SetupRouter() *gin.Engine {
 	//创建gin引擎
 	router := gin.Default()
+	// router := gin.New()
+	// router.Use(gin.Recovery())	//除去不重要的日志中间件，用来做TPS测试
 
 	//静态（使用相对路径）
 	router.StaticFS("/static", http.Dir("static"))
@@ -47,14 +49,15 @@ func SetupRouter() *gin.Engine {
 		//重定向
 		testgin.GET("/exredirect", CORSMiddleware(), func(ctx *gin.Context) {
 			// ctx.Redirect(http.StatusMovedPermanently, "https://www.baidu.com")
-			ctx.Redirect(http.StatusFound, "https://www.baidu.com")
+			// ctx.Redirect(http.StatusFound, "https://www.baidu.com")
+			ctx.JSON(http.StatusOK, gin.H{"hello": "exredirect"})
 		})
 		testgin.GET("/inredirect", func(ctx *gin.Context) {
 			ctx.Request.URL.Path = "/testgin/inredirect2"
 			router.HandleContext(ctx)
 		})
 		testgin.GET("/inredirect2", func(ctx *gin.Context) {
-			ctx.JSON(http.StatusOK, gin.H{"hello": "world"})
+			ctx.JSON(http.StatusOK, gin.H{"hello": "inredirect"})
 		})
 
 		//基础授权中间件
