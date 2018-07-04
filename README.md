@@ -4,7 +4,7 @@
 
 testgin is a gin based server.
 ## Quick start
-1.Prepare a json config file  
+1. Prepare a json config file  
 ```json
 {
     "db":{
@@ -18,7 +18,7 @@ testgin is a gin based server.
 }
 ```
 
-2.Run it  
+2. Run it  
 For example, your config file is $GOPATH/src/github.com/xujintao/config/config.json  
 
 * Run from source directly  
@@ -40,5 +40,5 @@ docker run --rm \
 ```
 more tags: https://hub.docker.com/r/xujintao/testgin/tags/  
 
-3.Test  
+3. Test  
 Open chrome, press F12, then visit http://172.0.0.1:8080 
