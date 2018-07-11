@@ -2,7 +2,9 @@
 
 [![Build Status](https://www.travis-ci.org/xujintao/testgin.svg?branch=master)](https://www.travis-ci.org/xujintao/testgin)
 
-testgin is a gin based server.
+testgin is a gin based api gateway.  
+![](https://github.com/xujintao/testgin/blob/master/gateway.jpg)
+
 ## Quick start
 1. Prepare a json config file  
 ```json
@@ -14,6 +16,15 @@ testgin is a gin based server.
         "ip": "127.0.0.1",
         "port": 3306,
         "table":"test"
+    },
+    "etcd":{
+        "ip": "127.0.0.1",
+        "port": 2379
+    },
+
+    "serverA":{
+        "ip": "127.0.0.1",
+        "port": 1701
     }
 }
 ```
