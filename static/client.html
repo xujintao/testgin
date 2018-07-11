@@ -115,6 +115,18 @@
                     alert('第三方api调用失败');
                 }
             })
+
+            //试试grpc
+            $.ajax({
+                type: "get",
+                url: "/testgrpc/hello",
+                success: function(data){
+                    console.log(data);
+                },
+                error: function(){
+                    alert('grpc调用失败');
+                }
+            })
         });
     </script>
 </head>

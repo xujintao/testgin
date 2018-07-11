@@ -12,12 +12,16 @@ import (
 var BConfig = &Config{}
 
 var (
-	DBName     string
-	DBUser     string
-	DBPassword string
-	DBIp       string
-	DBPort     uint
-	DBTable    string
+	DBName      string
+	DBUser      string
+	DBPassword  string
+	DBIp        string
+	DBPort      uint
+	DBTable     string
+	ETCDIp      string
+	ETCDPort    uint
+	ServerAIp   string
+	ServerAPort uint
 )
 
 type Config struct {
@@ -28,6 +32,16 @@ type Config struct {
 		Ip       string
 		Port     uint `default:"3306"`
 		Table    string
+	}
+
+	ETCD struct {
+		Ip   string
+		Port uint
+	}
+
+	ServerA struct {
+		Ip   string
+		Port uint
 	}
 }
 
@@ -50,6 +64,10 @@ func init() {
 	DBIp = BConfig.DB.Ip
 	DBPort = BConfig.DB.Port
 	DBTable = BConfig.DB.Table
+	ETCDIp = BConfig.ETCD.Ip
+	ETCDPort = BConfig.ETCD.Port
+	ServerAIp = BConfig.ServerA.Ip
+	ServerAPort = BConfig.ServerA.Port
 
 	//日志配置
 	logPath := filepath.Join(filepath.Dir(filePath), "/log")

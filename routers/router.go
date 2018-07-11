@@ -98,5 +98,11 @@ func SetupRouter() *gin.Engine {
 		thirdAPI.GET("/r2", controllers.R2)
 	}
 
+	//testgrpc
+	testgrpc := router.Group("/testgrpc")
+	{
+		testgrpc.GET("/hello", controllers.Testgrpc)
+	}
+
 	return router
 }
