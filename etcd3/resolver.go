@@ -20,11 +20,10 @@ import (
 
 const schema = "wonamingv3"
 
-var cli *clientv3.Client
-
 type etcdResolver struct {
 	rawAddr string
 	cc      resolver.ClientConn
+	cli     *clientv3.Client
 }
 
 // NewResolver initialize an etcd client
@@ -35,8 +34,8 @@ func NewResolver(etcdAddr string) resolver.Builder {
 func (r *etcdResolver) Build(target resolver.Target, cc resolver.ClientConn, opts resolver.BuildOption) (resolver.Resolver, error) {
 	var err error
 
-	if cli == nil {
-		cli, err = clientv3.New(clientv3.Config{
+	if r.cli == nil {
+		r.cli, err = clientv3.New(clientv3.Config{
 			Endpoints:   strings.Split(r.rawAddr, ";"),
 			DialTimeout: 15 * time.Second,
 		})
@@ -68,7 +67,7 @@ func (r etcdResolver) Close() {
 func (r *etcdResolver) watch(keyPrefix string) {
 	var addrList []resolver.Address
 
-	getResp, err := cli.Get(context.Background(), keyPrefix, clientv3.WithPrefix())
+	getResp, err := r.cli.Get(context.Background(), keyPrefix, clientv3.WithPrefix())
 	if err != nil {
 		log.Println(err)
 	} else {
@@ -79,7 +78,7 @@ func (r *etcdResolver) watch(keyPrefix string) {
 
 	r.cc.NewAddress(addrList)
 
-	rch := cli.Watch(context.Background(), keyPrefix, clientv3.WithPrefix())
+	rch := r.cli.Watch(context.Background(), keyPrefix, clientv3.WithPrefix())
 	for n := range rch {
 		for _, ev := range n.Events {
 			addr := strings.TrimPrefix(string(ev.Kv.Key), keyPrefix)

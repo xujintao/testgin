@@ -28,7 +28,9 @@ func main() {
 	//注册服务
 	etcdAddr := fmt.Sprintf("%s:%d", config.ETCDIp, config.ETCDPort)
 	serverAddr := fmt.Sprintf("%s:%d", config.ServerAIp, config.ServerAPort)
-	go etcd3.Register(etcdAddr, serviceName, serverAddr, 5)
+	if err := etcd3.Register(etcdAddr, serviceName, serverAddr, 5); err != nil {
+		log.Fatal(err)
+	}
 
 	//优雅关闭
 	ch := make(chan os.Signal, 1)
@@ -36,7 +38,9 @@ func main() {
 	go func() {
 		s := <-ch
 		log.Printf("receive signal '%v'", s)
-		etcd3.UnRegister(serviceName, serverAddr)
+		if err := etcd3.UnRegister(serviceName, serverAddr); err != nil {
+			log.Panic(err)
+		}
 
 		if i, ok := s.(syscall.Signal); ok {
 			os.Exit(int(i))
