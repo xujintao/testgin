@@ -8,7 +8,6 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
-	"time"
 
 	"github.com/xujintao/glog"
 	"github.com/xujintao/testgin/config"
@@ -60,27 +59,9 @@ func main() {
 	defer s.GracefulStop()
 	pb.RegisterHelloServiceServer(s, &helloServer{})
 
-	if err := s.Serve(tcpKeepAliveListener{l.(*net.TCPListener)}); err != nil {
+	if err := s.Serve(l); err != nil {
 		log.Fatalf("failed to serve: %s", err)
 	}
-}
-
-// tcpKeepAliveListener sets TCP keep-alive timeouts on accepted
-// connections. It's used by ListenAndServe and ListenAndServeTLS so
-// dead TCP connections (e.g. closing laptop mid-download) eventually
-// go away.
-type tcpKeepAliveListener struct {
-	*net.TCPListener
-}
-
-func (ln tcpKeepAliveListener) Accept() (c net.Conn, err error) {
-	tc, err := ln.AcceptTCP()
-	if err != nil {
-		return
-	}
-	tc.SetKeepAlive(true)
-	tc.SetKeepAlivePeriod(3 * time.Minute)
-	return tc, nil
 }
 
 type helloServer struct{}
