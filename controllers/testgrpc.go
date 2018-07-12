@@ -2,28 +2,23 @@ package controllers
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"net/http"
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/xujintao/testgin/config"
-	"github.com/xujintao/testgin/etcd3"
 	"github.com/xujintao/testgin/pb"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/balancer/roundrobin"
-	"google.golang.org/grpc/resolver"
 )
 
 func Testgrpc(ctx *gin.Context) {
-	r := etcd3.NewResolver(fmt.Sprintf("%s:%d", config.ETCDIp, config.ETCDPort))
-	resolver.Register(r)
-
-	conn, err := grpc.Dial(r.Scheme()+"://author/hello_service", grpc.WithInsecure(), grpc.WithBalancerName(roundrobin.Name))
+	// 函数乱序传参的设计方法
+	conn, err := grpc.Dial("wonamingv3://author/hello_service", grpc.WithInsecure(), grpc.WithBalancerName(roundrobin.Name))
 	if err != nil {
 		log.Panic(err)
 	}
+	defer conn.Close()
 
 	client := pb.NewHelloServiceClient(conn)
 
