@@ -57,7 +57,10 @@ func init() {
 	}
 
 	//解析配置文件
-	configor.Load(BConfig, filePath)
+	if err := configor.Load(BConfig, filePath); err != nil {
+		log.Fatalf("配置文件[%s]有问题，%s", filePath, err) //exit to fixed `sql: unknown driver "" (forgotten import?)`
+	}
+
 	DBName = BConfig.DB.Name
 	DBUser = BConfig.DB.User
 	DBPassword = BConfig.DB.Password
